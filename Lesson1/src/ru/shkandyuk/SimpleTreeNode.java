@@ -10,16 +10,16 @@ public class SimpleTreeNode<T> {
     // список дочерних узлов или null
     public List<SimpleTreeNode<T>> Children;
 
-    public SimpleTreeNode(T val, SimpleTreeNode<T> parent){
+    public SimpleTreeNode(T val, SimpleTreeNode<T> parent) {
         NodeValue = val;
         Parent = parent;
-        Children = null;
+        Children = new ArrayList<>();
     }
 }
 
 class SimpleTree<T> {
     // корень, может быть null
-        public SimpleTreeNode<T> Root;
+    public SimpleTreeNode<T> Root;
 
     public SimpleTree(SimpleTreeNode<T> root) {
         Root = root;
@@ -27,25 +27,40 @@ class SimpleTree<T> {
 
     public void AddChild(SimpleTreeNode<T> ParentNode, SimpleTreeNode<T> NewChild) {
         // ваш код добавления нового дочернего узла существующему ParentNode
-        ParentNode.Children.add(NewChild);
+        if( NewChild != null ){
+            ParentNode.Children.add(NewChild);
+            NewChild.Parent = ParentNode;
+        }
     }
 
+    /*************************************************************************************
+     * Удаляет все узлы под переданным
+     */
     public void DeleteNode(SimpleTreeNode<T> NodeToDelete) {
         // ваш код удаления существующего узла NodeToDelete
-        SimpleTreeNode<T> node = NodeToDelete;
-        for (int i = 0; node.Children != null; i++){
-            DeleteNode(node.Children.get(i));
-            NodeToDelete.Children = null;
+        SimpleTreeNode<T> currentNode = NodeToDelete;
+        NodeToDelete.Parent.Children.remove(NodeToDelete);
+
+        for (int i = 0; currentNode != null && !NodeToDelete.Children.isEmpty()
+                && i < NodeToDelete.Children.size(); i++) {
+            currentNode = NodeToDelete.Children.get(i);
+            DeleteNode(currentNode);
+            currentNode.Parent = null;
+            currentNode.Children.clear();
         }
+        if(NodeToDelete != null){
+            NodeToDelete.Children.clear();
+        }
+
     }
 
     public List<SimpleTreeNode<T>> GetAllNodes() {
         // ваш код выдачи всех узлов дерева в определённом порядке
         List<SimpleTreeNode<T>> resList = null;
         SimpleTreeNode<T> node = this.Root;
-        for (int i = 0; node.Children != null; i++){
+        for (int i = 0; node.Children != null; i++) {
             resList.add(node);
-            node = node
+            node = node;
 
         }
         return null;
@@ -63,25 +78,73 @@ class SimpleTree<T> {
 
     public int Count() {
         // количество всех узлов в дереве
-        return 0;
+        int res = 0;
+        if(this.Root != null){
+            res = CountNodeChildren(this.Root) + 1;
+        }
+        return res;
     }
 
     public int LeafCount() {
         // количество листьев в дереве
-        return 0;
+        return CountNodeChildren(this.Root);
     }
 
 
     public List<SimpleTreeNode<T>> GetAllChildren() {
         // ваш код выдачи всех узлов дерева в определённом порядке
         List<SimpleTreeNode<T>> resList = null;
-        SimpleTreeNode<T> node = this.Root;
-        for (int i = 0; node.Children != null; i++){
-            resList.add(node);
-            node = node
-
+        SimpleTreeNode<T> nodeRoot = this.Root;
+        if (nodeRoot != null) {
+            resList.addAll(GetNodeChildren(nodeRoot));
         }
-        return null;
+        return resList;
+    }
+
+    /**************************************************************************
+     * Помещает все дочерние узлы заданного узла в список и возвращает его
+     * @param node - заданный узел
+     * @return Список всех дочерних элементов заданного узла
+     */
+    public List<SimpleTreeNode<T>> GetNodeChildren(SimpleTreeNode<T> node) {
+        List<SimpleTreeNode<T>> resList = new ArrayList<>();
+        SimpleTreeNode<T> currentNode;
+
+        // Iterate through the node Children list, call GetNodeChildren for each child and return all children of this
+        // node and children of each children nodes
+        for (int i = 0; node != null && (currentNode = node.Children.get(i)) != null && i < currentNode.Children.size(); i++) {
+            resList.addAll(GetNodeChildren(currentNode));
+        }
+        return resList;
+    }
+
+    /*****************************************************************************
+     * Вычисляет количество узлов лежащих ниже узла
+     */
+    public int CountNodeChildren(SimpleTreeNode<T> node) {
+        int nodeAmount = 0;
+        SimpleTreeNode<T> currentNode = node;
+
+        for (int i = 0; currentNode != null && !node.Children.isEmpty()
+                && i < node.Children.size(); i++) {
+            currentNode = node.Children.get(i);
+            nodeAmount = nodeAmount + CountNodeChildren(currentNode) + 1;
+        }
+        return nodeAmount;
+    }
+
+    /*****************************************************************************
+     * Вычисляет количество листов в дереве
+     */
+    public int CountNodeLeaf(SimpleTreeNode<T> node) {
+        int leafAmount = 0;
+        SimpleTreeNode<T> currentNode = node;
+
+        for (int i = 0; node != null && i < currentNode.Children.size(); i++) {
+            currentNode = node.Children.get(i);
+
+            leafAmount = CountNodeChildren(currentNode) + 1;
+        }
+        return leafAmount;
     }
 }
-
