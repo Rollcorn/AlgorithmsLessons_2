@@ -19,7 +19,7 @@ public class SimpleTreeNode<T> {
 
 class SimpleTree<T> {
     // корень, может быть null
-    public SimpleTreeNode<T> Root;
+        public SimpleTreeNode<T> Root;
 
     public SimpleTree(SimpleTreeNode<T> root) {
         Root = root;
@@ -27,14 +27,27 @@ class SimpleTree<T> {
 
     public void AddChild(SimpleTreeNode<T> ParentNode, SimpleTreeNode<T> NewChild) {
         // ваш код добавления нового дочернего узла существующему ParentNode
+        ParentNode.Children.add(NewChild);
     }
 
     public void DeleteNode(SimpleTreeNode<T> NodeToDelete) {
         // ваш код удаления существующего узла NodeToDelete
+        SimpleTreeNode<T> node = NodeToDelete;
+        for (int i = 0; node.Children != null; i++){
+            DeleteNode(node.Children.get(i));
+            NodeToDelete.Children = null;
+        }
     }
 
     public List<SimpleTreeNode<T>> GetAllNodes() {
         // ваш код выдачи всех узлов дерева в определённом порядке
+        List<SimpleTreeNode<T>> resList = null;
+        SimpleTreeNode<T> node = this.Root;
+        for (int i = 0; node.Children != null; i++){
+            resList.add(node);
+            node = node
+
+        }
         return null;
     }
 
@@ -56,6 +69,19 @@ class SimpleTree<T> {
     public int LeafCount() {
         // количество листьев в дереве
         return 0;
+    }
+
+
+    public List<SimpleTreeNode<T>> GetAllChildren() {
+        // ваш код выдачи всех узлов дерева в определённом порядке
+        List<SimpleTreeNode<T>> resList = null;
+        SimpleTreeNode<T> node = this.Root;
+        for (int i = 0; node.Children != null; i++){
+            resList.add(node);
+            node = node
+
+        }
+        return null;
     }
 }
 
