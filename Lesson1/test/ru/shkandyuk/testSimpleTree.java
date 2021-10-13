@@ -32,9 +32,11 @@ public class testSimpleTree {
         myTree.AddChild(node2, nodesArray.get(1));
 
         System.out.println(myTree.Count());
-        myTree.DeleteNode(node2);
+//        myTree.DeleteNode(node1);
         System.out.println(myTree.Count());
-
+        for (SimpleTreeNode<Integer> x :myTree.GetAllChildren()) {
+            System.out.println(x.NodeValue);
+        }
     }
 
 }
