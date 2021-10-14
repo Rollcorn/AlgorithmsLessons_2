@@ -1,4 +1,4 @@
-//package ru.shkandyuk;
+package ru.shkandyuk;
 
 import java.util.*;
 
@@ -31,13 +31,21 @@ class SimpleTree<T> {
      * @param NewChild
      */
     public void AddChild(SimpleTreeNode<T> ParentNode, SimpleTreeNode<T> NewChild) {
-
-        if (NewChild != null) {
-            NewChild.Parent = ParentNode;
+        if(NewChild == null){
+            return;
         }
-        if (ParentNode != null && NewChild != null) {
+        // Удалить у родителя звена NewChild, если он есть, NewChild из дочерних элементов
+        if(NewChild.Parent != null){
+            NewChild.Parent.Children.remove(NewChild);
+        }
+
+        // Добавить у ParentNode звено NewChild как дочерний элемент
+        if(ParentNode != null){
             ParentNode.Children.add(NewChild);
         }
+
+        //  Назначит у NewChild ParentNode как родительский элемент
+        NewChild.Parent = ParentNode;
 
     }
 
@@ -113,7 +121,7 @@ class SimpleTree<T> {
      * @return
      */
     public List<SimpleTreeNode<T>> FindNodesByValue(T val) {
-        return SubtreeNodesByValue(Root, val);
+        return FindNodesInSubtree(Root, val);
     }
 
     /****************************************************************
@@ -121,7 +129,7 @@ class SimpleTree<T> {
      * @param val
      * @return
      */
-    public List<SimpleTreeNode<T>> SubtreeNodesByValue(SimpleTreeNode<T> node, T val) {
+    public List<SimpleTreeNode<T>> FindNodesInSubtree(SimpleTreeNode<T> node, T val) {
         List<SimpleTreeNode<T>> resList = new ArrayList<>();
         SimpleTreeNode<T> currentNode = node;
 
@@ -136,7 +144,7 @@ class SimpleTree<T> {
         for (int i = 0; currentNode != null && !node.Children.isEmpty()
                 && i < node.Children.size(); i++) {
             currentNode = node.Children.get(i);
-            List<SimpleTreeNode<T>> tmpNode = SubtreeNodesByValue(currentNode, val);
+            List<SimpleTreeNode<T>> tmpNode = FindNodesInSubtree(currentNode, val);
             if (!tmpNode.isEmpty()) {
                 resList.addAll(tmpNode);
             }
@@ -185,18 +193,18 @@ class SimpleTree<T> {
      */
     public int CountSubtreeLeaf(SimpleTreeNode<T> node) {
         int leafAmount = 0;
-        SimpleTreeNode<T> currentNode = node;
-
-        for (int i = 0; currentNode != null && !node.Children.isEmpty()
-                && i < node.Children.size(); i++) {
-
-            currentNode = node.Children.get(i);
-            leafAmount = leafAmount + CountNodeChildren(currentNode);
-
-        }
-        if (currentNode != null && currentNode.Children.isEmpty()) {
+        if (node != null && node.Children.size() == 0) {
+            System.out.println("Лист? = " + node.NodeValue);
             leafAmount = leafAmount + 1;
         }
+
+        SimpleTreeNode<T> currentNode = node;
+        for (int i = 0; currentNode != null && !node.Children.isEmpty()
+                && i < node.Children.size(); i++) {
+            currentNode = node.Children.get(i);
+            leafAmount = leafAmount + CountSubtreeLeaf(currentNode);
+        }
+        System.out.println("Колво листьев = " + leafAmount);
         return leafAmount;
     }
 
@@ -206,20 +214,20 @@ class SimpleTree<T> {
      * @param NewParent
      */
     public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent) {
-
+        // Пустое звено не добавляется к дереву
         if (OriginalNode == null) {
             return;
         }
-
-        if (NewParent != null) {
-            NewParent.Children.add(OriginalNode);
-        }
-
-        if (OriginalNode.Parent != null) {
+        // Если звено уже имеет родителя, удаляем у родителя это звено из дочерних
+        if(OriginalNode.Parent != null){
             OriginalNode.Parent.Children.remove(OriginalNode);
         }
-
+        // Назначаем звену нового родителя
         OriginalNode.Parent = NewParent;
+        // Добавляем
+        if( NewParent != null){
+            NewParent.Children.add(OriginalNode);
+        }
 
     }
 }

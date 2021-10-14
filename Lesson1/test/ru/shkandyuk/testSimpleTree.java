@@ -17,7 +17,7 @@ public class testSimpleTree {
         SimpleTreeNode<Integer> node4 = new SimpleTreeNode<Integer>(4, null);
         SimpleTreeNode<Integer> node5 = new SimpleTreeNode<Integer>(5, null);
         SimpleTreeNode<Integer> node6 = new SimpleTreeNode<Integer>(6, null);
-        SimpleTreeNode<Integer> node7 = new SimpleTreeNode<Integer>(3, null);
+        SimpleTreeNode<Integer> node7 = new SimpleTreeNode<Integer>(7, null);
 
         SimpleTree<Integer> myTree = new SimpleTree<Integer>(node1);
         for (SimpleTreeNode<Integer> x :myTree.GetAllNodes()) {
@@ -93,7 +93,7 @@ public class testSimpleTree {
         SimpleTreeNode<Integer> node4 = new SimpleTreeNode<Integer>(4, null);
         SimpleTreeNode<Integer> node5 = new SimpleTreeNode<Integer>(5, null);
         SimpleTreeNode<Integer> node6 = new SimpleTreeNode<Integer>(6, null);
-        SimpleTreeNode<Integer> node7 = new SimpleTreeNode<Integer>(3, null);
+        SimpleTreeNode<Integer> node7 = new SimpleTreeNode<Integer>(7, null);
 
         SimpleTree<Integer> myTree = new SimpleTree<Integer>(node1);
         myTree.AddChild(node1, node2);
@@ -102,12 +102,24 @@ public class testSimpleTree {
         myTree.AddChild(node2, node5);
         myTree.AddChild(node3, node6);
         myTree.AddChild(node3, node7);
-        System.out.println("Количество узлов: " + myTree.Count() + " Количество листьев: " + myTree.LeafCount());
+        myTree.LeafCount();
+        System.out.println("1: Количество узлов: " + myTree.Count() + " Количество листьев: " + myTree.LeafCount());
         for (SimpleTreeNode<Integer> x :myTree.GetAllNodes()) {
             System.out.println(x.NodeValue);
         }
+
+        System.out.println("Дети 6 узла до перемещения");
+        for (SimpleTreeNode<Integer> x :node6.Children) {
+            System.out.println(x.NodeValue);
+        }
         myTree.MoveNode(node2, node6);
-        System.out.println("Количество узлов: " + myTree.Count() + " Количество листьев: " + myTree.LeafCount());
+        System.out.println("Дети 6 узла после перемещения");
+        for (SimpleTreeNode<Integer> x :node6.Children) {
+            System.out.println(x.NodeValue);
+        }
+
+        myTree.LeafCount();
+        System.out.println("2: Количество узлов: " + myTree.Count() + " Количество листьев: " + myTree.LeafCount());
         for (SimpleTreeNode<Integer> x :myTree.GetAllNodes()) {
             System.out.println(x.NodeValue);
         }
