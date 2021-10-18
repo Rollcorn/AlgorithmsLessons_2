@@ -30,7 +30,9 @@ class BSTFind<T> {
     public boolean NodeHasKey; // true если узел найден
     public boolean ToLeft; // true, если родительскому узлу надо добавить новый левым
 
-    public BSTFind() { Node = null; }
+    public BSTFind() {
+        Node = null;
+    }
 }
 
 class BST<T> {
@@ -41,13 +43,29 @@ class BST<T> {
     }
 
     /*****************************************************************
-     * Метод поиска узла дерева с определенным ключом
-     * @param key
+     * Метод поиска в дереве узла по ключу и сопутствующей информации
+     * @param aKey
      * @return
      */
-    public BSTFind<T> FindNodeByKey(int key) {
-        // ищем в дереве узел и сопутствующую информацию по ключу
-        return null;
+    public BSTFind<T> FindNodeByKey(int aKey) {
+        BSTNode<T> curNode = Root;
+        BSTFind<T> findNode = new BSTFind<>();
+        findNode.NodeHasKey = false;
+
+        while ( curNode != null && !findNode.NodeHasKey) {
+            if ( curNode.NodeKey == aKey ) {
+                findNode.Node = curNode;
+                findNode.NodeHasKey = true;
+            } else if ( aKey < curNode.NodeKey ) {
+                findNode.ToLeft = true;
+                curNode = curNode.LeftChild;
+            } else {
+                curNode = curNode.RightChild;
+                findNode.ToLeft = false;
+            }
+        }
+        
+        return findNode;
     }
 
     /**************************************************************************************
@@ -57,8 +75,10 @@ class BST<T> {
      * @return
      */
     public boolean AddKeyValue(int key, T val) {
-        // добавляем ключ-значение в дерево
-        return false; // если ключ уже есть
+        boolean addResult = false;
+
+
+        return addResult; // если ключ уже есть
     }
 
     public BSTNode<T> FinMinMax(BSTNode<T> FromNode, boolean FindMax) {
