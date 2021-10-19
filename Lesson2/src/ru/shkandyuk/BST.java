@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.*;
 
 class BSTNode<T> {
-    public int NodeKey; // ключ узла
-    public T NodeValue; // значение в узле
-    public BSTNode<T> Parent; // родитель или null для корня
-    public BSTNode<T> LeftChild; // левый потомок
+    public int        NodeKey;    // ключ узла
+    public T          NodeValue;  // значение в узле
+    public BSTNode<T> Parent;     // родитель или null для корня
+    public BSTNode<T> LeftChild;  // левый потомок
     public BSTNode<T> RightChild; // правый потомок
 
     public BSTNode(int key, T val, BSTNode<T> parent) {
@@ -71,13 +71,13 @@ class BST<T> {
      * @return
      */
     public boolean AddKeyValue(int key, T val) {
-        BSTNode<T> curNode = Root;
         BSTFind<T> checkNode = FindNodeByKey(key);
 
         if( checkNode.NodeHasKey ){
             return false;
         }
 
+        BSTNode<T> curNode = Root;
         BSTNode<T> insertNode = new BSTNode<>(key, val, curNode);
         if( checkNode.ToLeft ){
             curNode.LeftChild = insertNode;
@@ -108,16 +108,32 @@ class BST<T> {
         if( checkNode.NodeHasKey ){
             return false;
         }
+
         BSTNode<T> curNode = checkNode.Node;
+        curNode.Parent.LeftChild = null;
+        curNode = curNode.LeftChild;
+
         while( curNode != null ){
-            // TODO
+            AddKeyValue(curNode.NodeKey, curNode.NodeValue);
+            curNode = curNode.LeftChild;
+
         }
 
         return false; // если узел не найден
     }
 
     public int Count() {
-        return 0; // количество узлов в дереве
+
+        return CountNode(Root); // количество узлов в дереве
     }
 
+    public int CountNode(BSTNode<T> fromNode) {
+        int count = 0;
+
+        if( fromNode != null ){
+            count = 1 + CountNode(fromNode.LeftChild) + CountNode(fromNode.RightChild);
+        }
+
+        return count; // количество узлов в дереве
+    }
 }
