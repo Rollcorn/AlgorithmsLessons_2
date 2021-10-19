@@ -4,15 +4,10 @@ import java.io.*;
 import java.util.*;
 
 class BSTNode<T> {
-
     public int NodeKey; // ключ узла
-
     public T NodeValue; // значение в узле
-
     public BSTNode<T> Parent; // родитель или null для корня
-
     public BSTNode<T> LeftChild; // левый потомок
-
     public BSTNode<T> RightChild; // правый потомок
 
     public BSTNode(int key, T val, BSTNode<T> parent) {
@@ -52,9 +47,11 @@ class BST<T> {
         BSTFind<T> findNode = new BSTFind<>();
         findNode.NodeHasKey = false;
 
+        // Попытка найтир звено с заданным ключеном либо доказать что такого нет
         while ( curNode != null && !findNode.NodeHasKey) {
+            findNode.Node = curNode;
+
             if ( curNode.NodeKey == aKey ) {
-                findNode.Node = curNode;
                 findNode.NodeHasKey = true;
             } else if ( aKey < curNode.NodeKey ) {
                 findNode.ToLeft = true;
@@ -64,7 +61,6 @@ class BST<T> {
                 findNode.ToLeft = false;
             }
         }
-        
         return findNode;
     }
 
@@ -75,19 +71,48 @@ class BST<T> {
      * @return
      */
     public boolean AddKeyValue(int key, T val) {
-        boolean addResult = false;
+        BSTNode<T> curNode = Root;
+        BSTFind<T> checkNode = FindNodeByKey(key);
 
+        if( checkNode.NodeHasKey ){
+            return false;
+        }
 
-        return addResult; // если ключ уже есть
+        BSTNode<T> insertNode = new BSTNode<>(key, val, curNode);
+        if( checkNode.ToLeft ){
+            curNode.LeftChild = insertNode;
+        } else {
+            curNode.RightChild = insertNode;
+        }
+
+        return true; // если ключ уже есть
     }
 
-    public BSTNode<T> FinMinMax(BSTNode<T> FromNode, boolean FindMax) {
-        // ищем максимальный/минимальный ключ в поддереве
-        return null;
+    public BSTNode<T> FinMinMax(BSTNode<T> aFromNode, boolean aFindMax) {
+        BSTNode<T> node = null;
+        BSTNode<T> curNode = aFromNode;
+
+        while( curNode != null ){
+            node = curNode;
+            if( aFindMax ){
+                curNode = curNode.RightChild;
+            } else {
+                curNode = curNode.LeftChild;
+            }
+        }
+        return node;
     }
 
     public boolean DeleteNodeByKey(int key) {
-        // удаляем узел по ключу
+        BSTFind<T> checkNode = FindNodeByKey(key);
+        if( checkNode.NodeHasKey ){
+            return false;
+        }
+        BSTNode<T> curNode = checkNode.Node;
+        while( curNode != null ){
+            // TODO
+        }
+
         return false; // если узел не найден
     }
 
