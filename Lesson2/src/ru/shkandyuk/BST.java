@@ -77,7 +77,7 @@ class BST<T> {
             return false;
         }
 
-        BSTNode<T> curNode = Root;
+        BSTNode<T> curNode = checkNode.Node;
         BSTNode<T> insertNode = new BSTNode<>(key, val, curNode);
         if( checkNode.ToLeft ){
             curNode.LeftChild = insertNode;
@@ -105,21 +105,30 @@ class BST<T> {
 
     public boolean DeleteNodeByKey(int key) {
         BSTFind<T> checkNode = FindNodeByKey(key);
-        if( checkNode.NodeHasKey ){
+        if( !checkNode.NodeHasKey ){
             return false;
         }
 
         BSTNode<T> curNode = checkNode.Node;
-        curNode.Parent.LeftChild = null;
+
+
+        if(checkNode.ToLeft){
+            curNode.Parent.LeftChild = null;
+        } else {
+            curNode.Parent.RightChild = null;
+        }
+
+        if(curNode != Root) {
+            curNode.Parent = null;
+        }
         curNode = curNode.LeftChild;
 
         while( curNode != null ){
             AddKeyValue(curNode.NodeKey, curNode.NodeValue);
             curNode = curNode.LeftChild;
-
         }
 
-        return false; // если узел не найден
+        return true;
     }
 
     public int Count() {
@@ -131,6 +140,7 @@ class BST<T> {
         int count = 0;
 
         if( fromNode != null ){
+            System.out.println(fromNode.NodeKey);
             count = 1 + CountNode(fromNode.LeftChild) + CountNode(fromNode.RightChild);
         }
 
