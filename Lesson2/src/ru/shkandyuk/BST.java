@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.*;
 
 class BSTNode<T> {
-    public int        NodeKey;    // ключ узла
-    public T          NodeValue;  // значение в узле
+    public int NodeKey;    // ключ узла
+    public T NodeValue;  // значение в узле
     public BSTNode<T> Parent;     // родитель или null для корня
     public BSTNode<T> LeftChild;  // левый потомок
     public BSTNode<T> RightChild; // правый потомок
@@ -27,6 +27,8 @@ class BSTFind<T> {
 
     public BSTFind() {
         Node = null;
+        NodeHasKey = false;
+        ToLeft = false;
     }
 }
 
@@ -45,15 +47,15 @@ class BST<T> {
     public BSTFind<T> FindNodeByKey(int aKey) {
         BSTNode<T> curNode = Root;
         BSTFind<T> findNode = new BSTFind<>();
-        findNode.NodeHasKey = false;
 
         // Попытка найтир звено с заданным ключеном либо доказать что такого нет
-        while ( curNode != null && !findNode.NodeHasKey) {
+        while (curNode != null && !findNode.NodeHasKey) {
+
             findNode.Node = curNode;
 
-            if ( curNode.NodeKey == aKey ) {
+            if (curNode.NodeKey == aKey) {
                 findNode.NodeHasKey = true;
-            } else if ( aKey < curNode.NodeKey ) {
+            } else if (aKey < curNode.NodeKey) {
                 findNode.ToLeft = true;
                 curNode = curNode.LeftChild;
             } else {
@@ -61,6 +63,7 @@ class BST<T> {
                 findNode.ToLeft = false;
             }
         }
+
         return findNode;
     }
 
@@ -73,28 +76,31 @@ class BST<T> {
     public boolean AddKeyValue(int key, T val) {
         BSTFind<T> checkNode = FindNodeByKey(key);
 
-        if( checkNode.NodeHasKey ){
+        // если ключ уже есть
+        if (checkNode.NodeHasKey) {
             return false;
         }
 
         BSTNode<T> curNode = checkNode.Node;
         BSTNode<T> insertNode = new BSTNode<>(key, val, curNode);
-        if( checkNode.ToLeft ){
+        if (checkNode.Node == null) {
+            Root = insertNode;
+        } else if (checkNode.ToLeft) {
             curNode.LeftChild = insertNode;
         } else {
             curNode.RightChild = insertNode;
         }
 
-        return true; // если ключ уже есть
+        return true;
     }
 
     public BSTNode<T> FinMinMax(BSTNode<T> aFromNode, boolean aFindMax) {
         BSTNode<T> node = null;
         BSTNode<T> curNode = aFromNode;
 
-        while( curNode != null ){
+        while (curNode != null) {
             node = curNode;
-            if( aFindMax ){
+            if (aFindMax) {
                 curNode = curNode.RightChild;
             } else {
                 curNode = curNode.LeftChild;
@@ -105,45 +111,67 @@ class BST<T> {
 
     public boolean DeleteNodeByKey(int key) {
         BSTFind<T> checkNode = FindNodeByKey(key);
-        if( !checkNode.NodeHasKey ){
+        if (!checkNode.NodeHasKey) {
             return false;
         }
 
         BSTNode<T> curNode = checkNode.Node;
 
-
-        if(checkNode.ToLeft){
-            curNode.Parent.LeftChild = null;
+        if (curNode.LeftChild == null) {
+            Transplant(curNode, curNode.RightChild);
+        } else if (curNode.RightChild == null) {
+            Transplant(curNode, curNode.LeftChild);
         } else {
-            curNode.Parent.RightChild = null;
-        }
+            BSTNode<T> nextMinNode = FinMinMax(curNode.RightChild, false);
 
-        if(curNode != Root) {
-            curNode.Parent = null;
-        }
-        curNode = curNode.LeftChild;
-
-        while( curNode != null ){
-            AddKeyValue(curNode.NodeKey, curNode.NodeValue);
-            curNode = curNode.LeftChild;
+            if (nextMinNode.Parent != curNode) {
+                Transplant(nextMinNode, nextMinNode.RightChild);
+                nextMinNode.RightChild = curNode.RightChild;
+                nextMinNode.RightChild.Parent = nextMinNode;
+            }
+            Transplant(curNode, nextMinNode);
+            nextMinNode.LeftChild = curNode.LeftChild;
+            nextMinNode.LeftChild.Parent = nextMinNode;
         }
 
         return true;
     }
 
-    public int Count() {
+    public void Transplant(BSTNode<T> firstNode, BSTNode<T> secondNode) {
+        if (firstNode.Parent == null) {
+            Root = secondNode;
+        } else if (firstNode == firstNode.Parent.LeftChild) {
+            firstNode.Parent.LeftChild = secondNode;
+        } else {
+            firstNode.Parent.RightChild = secondNode;
+        }
 
+        if (secondNode != null) {
+            secondNode.Parent = firstNode.Parent;
+        }
+    }
+
+    public int Count() {
         return CountNode(Root); // количество узлов в дереве
     }
 
     public int CountNode(BSTNode<T> fromNode) {
         int count = 0;
-
-        if( fromNode != null ){
-            System.out.println(fromNode.NodeKey);
+        if (fromNode != null) {
             count = 1 + CountNode(fromNode.LeftChild) + CountNode(fromNode.RightChild);
         }
-
         return count; // количество узлов в дереве
+    }
+
+    public void printTree(BSTNode<T> fromNode){
+            if (fromNode != null) {
+                if(fromNode.Parent != null){
+                    System.out.println(fromNode.Parent.NodeKey + " --> " + fromNode.NodeKey);
+                } else {
+                    System.out.println("C = " + fromNode.NodeKey);
+                }
+                printTree(fromNode.LeftChild);
+                printTree(fromNode.RightChild);
+            }
     }
 }

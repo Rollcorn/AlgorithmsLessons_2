@@ -27,6 +27,15 @@ public class testBST {
     }
 
     @Test
+    public void testAdd(){
+        BST<Integer> mbst1 = new BST<Integer>(null);
+        mbst1.AddKeyValue(6,6);
+        System.out.println("Size: " + mbst1.Count());
+        System.out.println("Max: " + mbst1.FinMinMax(mbst1.Root, true).NodeKey);
+        System.out.println("Min: " + mbst1.FinMinMax(mbst1.Root, false).NodeKey);
+    }
+
+    @Test
     public void testFinMinMax(){
         System.out.println("Size: " + mbst.Count());
         System.out.println("Max: " + mbst.FinMinMax(mbst.Root, true).NodeKey);
@@ -36,20 +45,52 @@ public class testBST {
 
     @Test
     public void testDelete(){
+        mbst.printTree(mbst.Root);
+        System.out.println("Size: " + mbst.Count());
+        System.out.println();
+
         System.out.println("Delete key = 7");
         mbst.DeleteNodeByKey(7);
+        mbst.printTree(mbst.Root);
         System.out.println("Size: " + mbst.Count());
         System.out.println("Max: " + mbst.FinMinMax(mbst.Root, true).NodeKey);
         System.out.println("Min: " + mbst.FinMinMax(mbst.Root, false).NodeKey);
+        System.out.println();
+
         System.out.println("Delete key = 23");
+        mbst.printTree(mbst.Root);
         mbst.DeleteNodeByKey(23);
+        System.out.println("Size: " + mbst.Count());
         System.out.println("Max: " + mbst.FinMinMax(mbst.Root, true).NodeKey);
         System.out.println("Min: " + mbst.FinMinMax(mbst.Root, false).NodeKey);
+        System.out.println();
+
         System.out.println("Delete key = 2");
         mbst.DeleteNodeByKey(2);
+        System.out.println("Size: " + mbst.Count());
         System.out.println("Max: " + mbst.FinMinMax(mbst.Root, true).NodeKey);
         System.out.println("Min: " + mbst.FinMinMax(mbst.Root, false).NodeKey);
+        System.out.println("Delete key = 11");
+        System.out.println();
 
+        mbst.DeleteNodeByKey(11);
+        System.out.println("Size: " + mbst.Count());
+        System.out.println("Max: " + mbst.FinMinMax(mbst.Root, true).NodeKey);
+        System.out.println("Min: " + mbst.FinMinMax(mbst.Root, false).NodeKey);
+        System.out.println("Delete key = 3");
+        System.out.println();
+
+        mbst.DeleteNodeByKey(3);
+        System.out.println("Size: " + mbst.Count());
+        System.out.println("Max: " + mbst.FinMinMax(mbst.Root, true).NodeKey);
+        System.out.println("Min: " + mbst.FinMinMax(mbst.Root, false).NodeKey);
+        System.out.println();
+
+        System.out.println("Delete key = 8");
+        mbst.DeleteNodeByKey(8);
+        System.out.println("Size: " + mbst.Count());
+        System.out.println("Max: " + mbst.FinMinMax(mbst.Root, true).NodeKey);
+        System.out.println("Min: " + mbst.FinMinMax(mbst.Root, false).NodeKey);
 
     }
 
