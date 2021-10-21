@@ -174,4 +174,16 @@ class BST<T> {
                 printTree(fromNode.RightChild);
             }
     }
+
+    public ArrayList<BSTNode> WideAllNodes() {
+        ArrayList<BSTNode> mList = null;
+
+        return mList;
+    }
+
+    public ArrayList<BSTNode> DeepAllNodes(){
+        ArrayList<BSTNode> mList = null;
+
+        return mList;
+    }
 }
