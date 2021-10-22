@@ -1,4 +1,4 @@
-// package ru.shkandyuk;
+ package ru.shkandyuk;
 
 import java.io.*;
 import java.util.*;
@@ -176,13 +176,28 @@ class BST<T> {
     }
 
     public ArrayList<BSTNode> WideAllNodes() {
-        ArrayList<BSTNode> mList = null;
+        ArrayList<BSTNode> mList = new ArrayList<>();
+        BSTNode curnode = Root;
+        mList.add(Root);
+        for ( int i = 0, elems = 1; elems < this.Count(); i++, curnode = mList.get(i)) {
+            if(curnode == null) {
+                continue;
+            }
+            if(curnode.LeftChild != null){
+                elems++;
+            }
+            if(curnode.RightChild != null){
+                elems++;
+            }
+            mList.add(curnode.LeftChild);
+            mList.add(curnode.RightChild);
+        }
 
         return mList;
     }
 
-    public ArrayList<BSTNode> DeepAllNodes(){
-        ArrayList<BSTNode> mList = null;
+    public ArrayList<BSTNode> DeepAllNodes( int order ){
+        ArrayList<BSTNode> mList = new ArrayList<>();
 
         return mList;
     }
