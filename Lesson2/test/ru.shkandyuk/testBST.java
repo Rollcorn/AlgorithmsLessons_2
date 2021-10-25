@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class testBST {
-    //    тест: проверяем поиск отсутствующего ключа в двух вариантах (запрошенный ключ добавляем либо левому, либо
+//    тест: проверяем поиск отсутствующего ключа в двух вариантах (запрошенный ключ добавляем либо левому, либо
 //    правому потомку и поиск присутствующего ключа)
     BSTNode<Integer> n1 = new BSTNode<Integer>(7, 7, null);
 
@@ -117,5 +117,71 @@ public class testBST {
             i++;
         }
     }
+
+    @Test
+    public void testDeepAllNodes(){
+
+        System.out.println("Pre Order Traversal");
+        ArrayList<BSTNode> postlist = mbst.DeepAllNodes(-1);
+        System.out.println("Count: " + mbst.Count());
+        int i = 0;
+        for (BSTNode<Integer> x : postlist) {
+            if (x != null) {
+                System.out.println(x.NodeKey);
+            } else {
+                System.out.println(x);
+            }
+            if (i == 0) {
+                System.out.println("-----");
+            }
+            if ( i > 0 && i % 2 == 0){
+                System.out.println("-----");
+            }
+            i++;
+        }
+
+        System.out.println("====================================");
+        System.out.println("In Order Traversal");
+        ArrayList<BSTNode> inlist = mbst.DeepAllNodes(0);
+        System.out.println("Count: " + mbst.Count());
+        int j = 0;
+        for (BSTNode<Integer> x : inlist) {
+            if (x != null) {
+                System.out.println(x.NodeKey);
+            } else {
+                System.out.println(x);
+            }
+            if (j == 0) {
+                System.out.println("-----");
+            }
+            if ( j > 0 && j % 2 == 0){
+                System.out.println("-----");
+            }
+            j++;
+        }
+
+        System.out.println("====================================");
+        System.out.println("Post Order Traversal");
+        ArrayList<BSTNode> prelist = mbst.DeepAllNodes(1);
+        System.out.println("Count: " + mbst.Count());
+        int k = 0;
+        for (BSTNode<Integer> x : prelist) {
+            if (x != null) {
+                System.out.println(x.NodeKey);
+            } else {
+                System.out.println(x);
+            }
+            if (k == 0) {
+                System.out.println("-----");
+            }
+            if ( k > 0 && k % 2 == 0){
+                System.out.println("-----");
+            }
+            k++;
+        }
+    }
+
+
+
 
 }

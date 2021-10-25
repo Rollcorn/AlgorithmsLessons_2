@@ -1,4 +1,4 @@
- package ru.shkandyuk;
+// package ru.shkandyuk;
 
 import java.io.*;
 import java.util.*;
@@ -199,6 +199,65 @@ class BST<T> {
     public ArrayList<BSTNode> DeepAllNodes( int order ){
         ArrayList<BSTNode> mList = new ArrayList<>();
 
+        if( order == 0 ){
+            mList.addAll( InOrederTrav(Root) );
+        }
+        if( order == 2 ) {
+            mList.addAll( PreOrederTrav(Root) );
+        }
+
+        if ( order == 1){
+            mList.addAll( PostOrederTrav(Root) );
+        }
         return mList;
     }
+
+    public ArrayList<BSTNode> InOrederTrav(BSTNode node){
+        ArrayList<BSTNode> mList = new ArrayList<>();
+
+        if(node == null){
+            return mList;
+        }
+        if(node.LeftChild != null){
+            mList.addAll( InOrederTrav(node.LeftChild) );
+        }
+        mList.add(node);
+        if(node.RightChild != null){
+            mList.addAll( InOrederTrav(node.RightChild) );
+        }
+        return mList;
+    }
+
+    public ArrayList<BSTNode> PreOrederTrav(BSTNode node){
+        ArrayList<BSTNode> mList = new ArrayList<>();
+
+        if(node == null){
+            return mList;
+        }
+        mList.add(node);
+        if(node.LeftChild != null){
+            mList.addAll( PreOrederTrav(node.LeftChild) );
+        }
+        if(node.RightChild != null){
+            mList.addAll( PreOrederTrav(node.RightChild) );
+        }
+        return mList;
+    }
+
+    public ArrayList<BSTNode> PostOrederTrav(BSTNode node){
+        ArrayList<BSTNode> mList = new ArrayList<>();
+
+        if(node == null){
+            return mList;
+        }
+        if(node.LeftChild != null){
+            mList.addAll( PostOrederTrav(node.LeftChild) );
+        }
+        if(node.RightChild != null){
+            mList.addAll( PostOrederTrav(node.RightChild) );
+        }
+        mList.add(node);
+        return mList;
+    }
+
 }
