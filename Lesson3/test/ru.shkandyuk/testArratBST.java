@@ -36,14 +36,11 @@ public class testArratBST {
         abst.AddKey(6);
         abst.AddKey(2);
         abst.AddKey(3);
-        abst.AddKey(1);
-        abst.AddKey(5);
-        abst.AddKey(7);
-        abst.AddKey(0);
-        abst.AddKey(9);
 
-        System.out.println("Find index [5]: " + abst.FindKeyIndex(5) );
-        System.out.println("Find index [0]: " + abst.FindKeyIndex(0) );
+
+        System.out.println("Find index [5]: " + abst.FindKeyIndex(4) );
+        System.out.println("Find index [0]: " + abst.FindKeyIndex(1) );
+        System.out.println("Find index [9]: " + abst.FindKeyIndex(25) );
         System.out.println("Find index [9]: " + abst.FindKeyIndex(9) );
 
     }

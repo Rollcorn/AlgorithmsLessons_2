@@ -19,12 +19,14 @@ class aBST {
 
     public Integer FindKeyIndex(int key) {
         Integer ret = null;
-        Integer curKey = 0;
 
         // ищем в массиве индекс ключа
         for ( int index = 0; index < Tree.length && ret == null; ) {
-            curKey = Tree[index];
-            if ( curKey == null || curKey == key ) {
+            Integer curKey = Tree[index];
+            if ( curKey == null ){
+                ret = -index;
+            }
+            else if ( curKey == key ) {
                 ret = index;
             }
             else if ( key < curKey  ) {
