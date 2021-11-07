@@ -6,9 +6,7 @@ public class AlgorithmsDataStructures2 {
 
     public static int[] GenerateBBSTArray(int[] a) {
 
-        if (a == null || a.length <= 1) {
-            return a;
-        }
+
 
         // Сортируем массив
         int[] sortArr = a;
@@ -30,12 +28,12 @@ public class AlgorithmsDataStructures2 {
         int r = 0;
         int part = 1;
         while ( i < bstArr.length ) {
-            for( int j = 0; j < part && l < leftTree.length; j++, i++, l++ ){
-                bstArr[i] = leftTree[l];
+            for( int j = 0; j < part && l < leftTree.length; j++ ){
+                bstArr[i++] = leftTree[l++];
             }
 
-            for( int j = 0; j < part && r < rightTree.length; j++, i++, r++ ){
-                bstArr[i] = rightTree[r];
+            for( int j = 0; j < part && r < rightTree.length; j++ ){
+                bstArr[i++] = rightTree[r++];
             }
             part = part << 1;
         }
