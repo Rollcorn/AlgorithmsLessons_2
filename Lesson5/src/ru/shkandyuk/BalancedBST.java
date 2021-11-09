@@ -1,4 +1,4 @@
-package ru.shkandyuk;
+//package ru.shkandyuk;
 
 import java.util.*;
 
@@ -73,7 +73,7 @@ class BalancedBST {
 
     public boolean IsBalanced(BSTNode root_node) {
 
-        return false; // сбалансировано ли дерево с корнем root_node
+        return DifSubTreeDeep(root_node) >= 0; // сбалансировано ли дерево с корнем root_node
     }
 
     /*********************************************************
@@ -82,9 +82,8 @@ class BalancedBST {
      * @return
      */
     public int DifSubTreeDeep(BSTNode root_node) {
-        Integer res       = null;
-        Integer leftDeep  = null;
-        Integer rightDeep = null;
+
+        int res = 0;
 
         if ( root_node == null ) {
             return res;
@@ -92,38 +91,34 @@ class BalancedBST {
 
         // Проверка является ли звено листом
         if ( root_node.RightChild == null && root_node.LeftChild == null ) {
-            res =  root_node.Level;
+            return root_node.Level;
         }
 
-        /**
-         * Рассматриваются варианты наличия/отсутствия узлов
-         * - один из узлов отсутствует;
-         * - оба узла отсутствуют;
-         * - оба узла присутствуют.
-         */
-        // Поиск листа в правом поддереве
+        int leftDeep  = 0;
+        int rightDeep = 0;
         if ( root_node.RightChild != null ) {
             rightDeep = DifSubTreeDeep(root_node.RightChild);
+        } else {
+            rightDeep = root_node.Level;
         }
-        // Поиск листа в левом поддереве
         if ( root_node.LeftChild != null ) {
             leftDeep = DifSubTreeDeep( root_node.LeftChild);
+        } else {
+            leftDeep = root_node.Level;
         }
 
-        // Разница глубин листьев правого и левого поддерева
-        if ( rightDeep != null && leftDeep != null ) {
+        if ( rightDeep < 0 || leftDeep < 0 ) {
+            res = Math.min( rightDeep, leftDeep );
+        } else {
             res = Math.abs( leftDeep - rightDeep );
+            if ( res > 1 ) {
+                res = -res;
+            } else {
+                res = Math.max( leftDeep, rightDeep );
+            }
         }
 
-        // Если правое и левое поддеревья сбаласированны возвращает наибольшую глубину
-        if ( res <= 1 ) {
-            return Math.max(leftDeep, rightDeep);
-        }
-        else if( res > 1) {
-            return -res;
-        }
-        else {
-            return res;
-        }
+        return res;
+
     }
 } 
