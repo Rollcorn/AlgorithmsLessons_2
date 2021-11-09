@@ -1,4 +1,4 @@
-package ru.shkandyuk;
+// package ru.shkandyuk;
 
 import java.util.*;
 
