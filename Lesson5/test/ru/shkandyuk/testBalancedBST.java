@@ -21,6 +21,7 @@ public class testBalancedBST {
         System.out.println("]");
 
         printTree(bst.Root);
+        bst.IsBalanced(bst.Root);
     }
 
     public void printTree(BSTNode fromNode) {

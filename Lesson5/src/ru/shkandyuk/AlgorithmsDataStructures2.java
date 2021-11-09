@@ -1,13 +1,13 @@
-//package ru.shkandyuk;
+package ru.shkandyuk;
 
 import java.util.*;
 
 class BSTNode {
-    public int      NodeKey;         // ключ узла
-    public BSTNode  Parent;      // родитель или null для корня
-    public BSTNode  LeftChild;   // левый потомок
-    public BSTNode  RightChild;  // правый потомок
-    public int      Level;       // глубина узла
+    public int      NodeKey;
+    public BSTNode  Parent;
+    public BSTNode  LeftChild;
+    public BSTNode  RightChild;
+    public int      Level;
 
     public BSTNode(int key, BSTNode parent) {
         NodeKey     = key;
@@ -18,36 +18,24 @@ class BSTNode {
 }
 
 class BalancedBST {
-    public BSTNode Root; // корень дерева
+    public BSTNode Root;
 
     public BalancedBST() {
         Root = null;
     }
 
-    /**
-     * - выбираем корневой элемент (центральный в отсортированном
-     * массиве),
-     * - применяем этот алгоритм к левому и правому поддеревьям (левой и
-     * правой частям массива).
-     * Соответственно, из корневого элемента мы создаём текущий узел,
-     * а левым и правым его узлами делаем поддеревья, которые возвращают эти два рекурсивных
-     * вызова.
-     *
-     * @param a
-     */
     public void GenerateTree(int[] a) {
 
         if (a != null) {
-            // Сортировка массива
             Arrays.sort(a);
             Root = GenerateSubTree(null, a);
         }
 
     }
 
-    private BSTNode GenerateSubTree(BSTNode parent, int[] arr) {
+    public BSTNode GenerateSubTree(BSTNode parent, int[] arr) {
         int     begin   = 0;
-        int     end     = arr.length; // ind of obj outside the array
+        int     end     = arr.length;
         int     middle  = end / 2;
         BSTNode res     = new BSTNode(arr[middle], parent);
         if ( parent == null ){
@@ -57,30 +45,20 @@ class BalancedBST {
         }
 
         if ( arr.length > 1 ) {
-            // Разделение массива
             int[] leftArr = Arrays.copyOfRange(arr, begin, middle);
             int[] rightArr = Arrays.copyOfRange(arr, (middle + 1), end);
 
-            // Инициализация потомков
             res.LeftChild = GenerateSubTree(res, leftArr);
-
             res.RightChild = GenerateSubTree(res, rightArr);
-
         }
 
         return res;
     }
 
     public boolean IsBalanced(BSTNode root_node) {
-
-        return DifSubTreeDeep(root_node) >= 0; // сбалансировано ли дерево с корнем root_node
+        return DifSubTreeDeep(root_node) >= 0;
     }
 
-    /*********************************************************
-     * Сравнивает глубину листа левого и правого подеревьев
-     * @param root_node
-     * @return
-     */
     public int DifSubTreeDeep(BSTNode root_node) {
 
         int res = 0;
@@ -89,13 +67,12 @@ class BalancedBST {
             return res;
         }
 
-        // Проверка является ли звено листом
         if ( root_node.RightChild == null && root_node.LeftChild == null ) {
             return root_node.Level;
         }
 
-        int leftDeep  = 0;
-        int rightDeep = 0;
+        int leftDeep;
+        int rightDeep;
         if ( root_node.RightChild != null ) {
             rightDeep = DifSubTreeDeep(root_node.RightChild);
         } else {
@@ -117,8 +94,6 @@ class BalancedBST {
                 res = Math.max( leftDeep, rightDeep );
             }
         }
-
         return res;
-
     }
 } 
