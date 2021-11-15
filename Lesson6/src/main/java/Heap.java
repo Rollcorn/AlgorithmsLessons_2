@@ -12,20 +12,28 @@ class Heap {
         // Расчет необходимой длины массива для размещения кучи заданной глубины
         int arrLength = 0;
         // размер массива кучи вычисляется на основе глубины кучи
-        for (int i = 0; i <= depth; i++) {
+        for (int i = 0; i < depth; i++) {
             arrLength = arrLength + (1 << i);
         }
         // Инициализация количества эллементов в массиве
-        size = a.length;
         HeapArray = new int[arrLength];
         // создаём массив кучи HeapArray из заданного
-        for (int i = 0; i < size; i++ ) {
-            Add(a[i]);
+        for (int j : a) {
+            Add(j);
         }
 
     }
 
     public int GetMax() {
+        int max = HeapArray[0];
+        for (int i = size;
+             ( Parent(i) <= 0 ) && ( HeapArray[i] > HeapArray[Parent(i)] );
+             i = Parent(i) ) {
+            int tmp = HeapArray[Parent(i)];
+            HeapArray[Parent(i)] = HeapArray[i];
+            HeapArray[i] = tmp;
+
+        }
         // вернуть значение корня и перестроить кучу
         return -1; // если куча пуста
     }
@@ -36,12 +44,10 @@ class Heap {
      * @return
      */
     public boolean Add(int key) {
-//TODO Пустые места проверить
         // проверить что в массиве есть место
         if ( HeapArray == null || size >= HeapArray.length) {
             return false;
         }
-
         // поместить новый элемент после последнего элемента
         HeapArray[size] = key;
 
@@ -52,6 +58,7 @@ class Heap {
             HeapArray[i] = tmp;
 
         }
+        size++;
         return true; // если куча вся заполнена
     }
 
