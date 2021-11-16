@@ -1,4 +1,4 @@
-import java.util.*;
+//import java.util.*;
 
 class Heap {
     public int[] HeapArray; // хранит неотрицательные числа-ключи
@@ -25,17 +25,39 @@ class Heap {
     }
 
     public int GetMax() {
+
+        if ( HeapArray == null ) {
+            return -1;
+        }
         int max = HeapArray[0];
-        for (int i = size;
-             ( Parent(i) <= 0 ) && ( HeapArray[i] > HeapArray[Parent(i)] );
-             i = Parent(i) ) {
-            int tmp = HeapArray[Parent(i)];
-            HeapArray[Parent(i)] = HeapArray[i];
-            HeapArray[i] = tmp;
+
+        HeapArray[0] = HeapArray[size - 1];
+        HeapArray[size - 1] = 0;
+        size--;
+
+        int currMax = 0;
+        for (int i = 0; i < size; i = currMax ) {
+
+            if ( HeapArray[currMax] < HeapArray[Left(i)] ) {
+                currMax = Left(i);
+            }
+            if ( HeapArray[currMax] < HeapArray[Right(i)] ){
+                currMax = Right(i);
+            }
+
+            if ( currMax == i ) {
+                break;
+            } else {
+                int tmp = HeapArray[currMax];
+                HeapArray[currMax] = HeapArray[i];
+                HeapArray[i] = tmp;
+                i = currMax;
+            }
+
 
         }
         // вернуть значение корня и перестроить кучу
-        return -1; // если куча пуста
+        return max; // если куча пуста
     }
 
     /************************************

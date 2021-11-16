@@ -31,6 +31,28 @@ class HeapTest {
 
     @Test
     void getMax() {
+        heap1.MakeHeap(arr, 4);
+        printHeap(heap1);
+        System.out.println("Heap1 SIZE is " + heap1.size);
+        System.out.println("Heap1 max is " + heap1.GetMax());
+        System.out.println("Heap1 SIZE is " + heap1.size);
+
+        printHeap(heap1);
+        System.out.println("Heap1 max is " + heap1.GetMax());
+        System.out.println("Heap1 SIZE is " + heap1.size);
+
+        printHeap(heap1);
+        System.out.println("Heap1 max is " + heap1.GetMax());
+        System.out.println("Heap1 SIZE is " + heap1.size);
+        printHeap(heap1);
+
+        heap1.Add(10);
+        printHeap(heap1);
+        System.out.println("Heap1 SIZE is " + heap1.size);
+        System.out.println("Heap1 max is " + heap1.GetMax());
+        System.out.println("Heap1 SIZE is " + heap1.size);
+        printHeap(heap1);
+
     }
 
     @Test
