@@ -1,7 +1,7 @@
-//import java.util.*;
+import java.util.*;
 
 class Heap {
-    public int[] HeapArray;
+    public int[] HeapArray; // хранит неотрицательные числа-ключи
     public int size = 0;
 
     public Heap() {
@@ -10,14 +10,18 @@ class Heap {
 
     public void MakeHeap(int[] a, int depth) {
 
+        // Расчет необходимой длины массива для размещения кучи заданной глубины
         int arrLength = 0;
+        // размер массива кучи вычисляется на основе глубины кучи
         for (int i = 0; i <= depth; i++) {
             arrLength = arrLength + (1 << i);
         }
+        // Инициализация количества эллементов в массиве
         HeapArray = new int[arrLength];
         if ( a == null || a.length == 0 ) {
             return;
         }
+        // создаём массив кучи HeapArray из заданного
         for ( int j : a ) {
             Add(j);
         }
@@ -55,16 +59,24 @@ class Heap {
 
 
         }
-        return max;
+        // вернуть значение корня и перестроить кучу
+        return max; // если куча пуста
     }
 
-
+    /************************************
+     * Добавление новго элемента в кучу
+     * @param key
+     * @return
+     */
     public boolean Add(int key) {
+        // проверить что в массиве есть место
         if ( HeapArray == null || size >= HeapArray.length) {
-            return false;
+            return false;// если куча вся заполнена
         }
+        // поместить новый элемент после последнего элемента
         HeapArray[size] = key;
 
+        // пока родительский элемент меньше нового элемента просеиваем новый элемент вверх кучи
         for (int i = size;
              ( i > 0 ) && ( Parent(i) >= 0 ) && ( HeapArray[i] > HeapArray[Parent(i)] );
              i = Parent(i) ) {
@@ -77,14 +89,17 @@ class Heap {
         return true;
     }
 
+    // Индекс родительского элемента
     public int Parent(int i) {
         return (i - 1)/2;
     }
 
+    // Индекс левого дочернего элемента
     public int Left(int i) {
         return 2 * i + 1;
     }
 
+    // Индекс правого дочернего элемента
     public int Right(int i) {
         return 2 * i + 2;
     }
