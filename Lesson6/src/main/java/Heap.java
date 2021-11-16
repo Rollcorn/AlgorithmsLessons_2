@@ -2,19 +2,23 @@
 
 class Heap {
     public int[] HeapArray;
-    int size = 0;
+    public int size = 0;
 
     public Heap() {
         HeapArray = null;
     }
 
     public void MakeHeap(int[] a, int depth) {
+
         int arrLength = 0;
-        for (int i = 0; i < depth; i++) {
+        for (int i = 0; i <= depth; i++) {
             arrLength = arrLength + (1 << i);
         }
         HeapArray = new int[arrLength];
-        for (int j : a) {
+        if ( a == null || a.length == 0 ) {
+            return;
+        }
+        for ( int j : a ) {
             Add(j);
         }
 
@@ -22,7 +26,7 @@ class Heap {
 
     public int GetMax() {
 
-        if ( HeapArray == null ) {
+        if ( HeapArray == null || HeapArray.length == 0 ) {
             return -1;
         }
         int max = HeapArray[0];
@@ -34,10 +38,10 @@ class Heap {
         int currMax = 0;
         for (int i = 0; i < size; i = currMax ) {
 
-            if ( HeapArray[currMax] < HeapArray[Left(i)] ) {
+            if ( Left(i) < (size - 1) && HeapArray[currMax] < HeapArray[Left(i)] ) {
                 currMax = Left(i);
             }
-            if ( HeapArray[currMax] < HeapArray[Right(i)] ){
+            if ( Right(i) < (size - 1) && HeapArray[currMax] < HeapArray[Right(i)] ){
                 currMax = Right(i);
             }
 
@@ -47,7 +51,6 @@ class Heap {
                 int tmp = HeapArray[currMax];
                 HeapArray[currMax] = HeapArray[i];
                 HeapArray[i] = tmp;
-                i = currMax;
             }
 
 
@@ -68,7 +71,7 @@ class Heap {
 
         }
         size++;
-        return true; 
+        return true;
     }
 
     public int Parent(int i) {
