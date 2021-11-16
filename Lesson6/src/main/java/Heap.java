@@ -38,10 +38,10 @@ class Heap {
         int currMax = 0;
         for (int i = 0; i < size; i = currMax ) {
 
-            if ( Left(i) < (size - 1) && HeapArray[currMax] < HeapArray[Left(i)] ) {
+            if ( ( Left(i) < size ) && ( HeapArray[currMax] < HeapArray[Left(i)] ) ) {
                 currMax = Left(i);
             }
-            if ( Right(i) < (size - 1) && HeapArray[currMax] < HeapArray[Right(i)] ){
+            if ( ( Right(i) < size ) && ( HeapArray[currMax] < HeapArray[Right(i)] ) ){
                 currMax = Right(i);
             }
 
@@ -58,13 +58,16 @@ class Heap {
         return max;
     }
 
+
     public boolean Add(int key) {
         if ( HeapArray == null || size >= HeapArray.length) {
             return false;
         }
         HeapArray[size] = key;
 
-        for (int i = size; ( Parent(i) >= 0 ) && ( HeapArray[i] > HeapArray[Parent(i)] ); i = Parent(i) ) {
+        for (int i = size;
+             ( i > 0 ) && ( Parent(i) >= 0 ) && ( HeapArray[i] > HeapArray[Parent(i)] );
+             i = Parent(i) ) {
             int tmp = HeapArray[Parent(i)];
             HeapArray[Parent(i)] = HeapArray[i];
             HeapArray[i] = tmp;
@@ -75,7 +78,7 @@ class Heap {
     }
 
     public int Parent(int i) {
-        return i / 2;
+        return (i - 1)/2;
     }
 
     public int Left(int i) {
