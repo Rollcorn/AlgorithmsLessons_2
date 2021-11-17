@@ -1,24 +1,28 @@
-//import java.util.*;
+import java.util.*;
 
 class Heap {
     public int[] HeapArray; // хранит неотрицательные числа-ключи
-    int size = 0;
+    public int size = 0;
 
     public Heap() {
         HeapArray = null;
     }
 
     public void MakeHeap(int[] a, int depth) {
+
         // Расчет необходимой длины массива для размещения кучи заданной глубины
         int arrLength = 0;
         // размер массива кучи вычисляется на основе глубины кучи
-        for (int i = 0; i < depth; i++) {
+        for (int i = 0; i <= depth; i++) {
             arrLength = arrLength + (1 << i);
         }
         // Инициализация количества эллементов в массиве
         HeapArray = new int[arrLength];
+        if ( a == null || a.length == 0 ) {
+            return;
+        }
         // создаём массив кучи HeapArray из заданного
-        for (int j : a) {
+        for ( int j : a ) {
             Add(j);
         }
 
@@ -26,7 +30,7 @@ class Heap {
 
     public int GetMax() {
 
-        if ( HeapArray == null ) {
+        if ( HeapArray == null || HeapArray.length == 0 ) {
             return -1;
         }
         int max = HeapArray[0];
@@ -38,10 +42,10 @@ class Heap {
         int currMax = 0;
         for (int i = 0; i < size; i = currMax ) {
 
-            if ( HeapArray[currMax] < HeapArray[Left(i)] ) {
+            if ( ( Left(i) < size ) && ( HeapArray[currMax] < HeapArray[Left(i)] ) ) {
                 currMax = Left(i);
             }
-            if ( HeapArray[currMax] < HeapArray[Right(i)] ){
+            if ( ( Right(i) < size ) && ( HeapArray[currMax] < HeapArray[Right(i)] ) ){
                 currMax = Right(i);
             }
 
@@ -51,7 +55,6 @@ class Heap {
                 int tmp = HeapArray[currMax];
                 HeapArray[currMax] = HeapArray[i];
                 HeapArray[i] = tmp;
-                i = currMax;
             }
 
 
@@ -68,25 +71,27 @@ class Heap {
     public boolean Add(int key) {
         // проверить что в массиве есть место
         if ( HeapArray == null || size >= HeapArray.length) {
-            return false;
+            return false;// если куча вся заполнена
         }
         // поместить новый элемент после последнего элемента
         HeapArray[size] = key;
 
         // пока родительский элемент меньше нового элемента просеиваем новый элемент вверх кучи
-        for (int i = size; ( Parent(i) >= 0 ) && ( HeapArray[i] > HeapArray[Parent(i)] ); i = Parent(i) ) {
+        for (int i = size;
+             ( i > 0 ) && ( Parent(i) >= 0 ) && ( HeapArray[i] > HeapArray[Parent(i)] );
+             i = Parent(i) ) {
             int tmp = HeapArray[Parent(i)];
             HeapArray[Parent(i)] = HeapArray[i];
             HeapArray[i] = tmp;
 
         }
         size++;
-        return true; // если куча вся заполнена
+        return true;
     }
 
     // Индекс родительского элемента
     public int Parent(int i) {
-        return i / 2;
+        return (i - 1)/2;
     }
 
     // Индекс левого дочернего элемента
