@@ -31,16 +31,16 @@ class SimpleTree<T> {
      * @param NewChild
      */
     public void AddChild(SimpleTreeNode<T> ParentNode, SimpleTreeNode<T> NewChild) {
-        if(NewChild == null){
+        if (NewChild == null) {
             return;
         }
         // Удалить у родителя звена NewChild, если он есть, NewChild из дочерних элементов
-        if(NewChild.Parent != null){
+        if (NewChild.Parent != null) {
             NewChild.Parent.Children.remove(NewChild);
         }
 
         // Добавить у ParentNode звено NewChild как дочерний элемент
-        if(ParentNode != null){
+        if (ParentNode != null) {
             ParentNode.Children.add(NewChild);
         }
 
@@ -218,13 +218,13 @@ class SimpleTree<T> {
             return;
         }
         // Если звено уже имеет родителя, удаляем у родителя это звено из дочерних
-        if(OriginalNode.Parent != null){
+        if (OriginalNode.Parent != null) {
             OriginalNode.Parent.Children.remove(OriginalNode);
         }
         // Назначаем звену нового родителя
         OriginalNode.Parent = NewParent;
         // Добавляем
-        if( NewParent != null){
+        if (NewParent != null) {
             NewParent.Children.add(OriginalNode);
         }
 
@@ -234,11 +234,53 @@ class SimpleTree<T> {
      * На основе текущего готового дерева формирует максимально возможный результирующий список пар вершин,
      * для которых надо разорвать связь
      */
-    public ArrayList<T> EvenTrees()
-    {
-        ArrayList<T> ret = new ArrayList<>();
+    public ArrayList<T> EvenTrees() {
+        LinkedList<SimpleTreeNode<T>> ret = new LinkedList<SimpleTreeNode<T>>();
+        ArrayList<T> queue = new ArrayList<T>();
 
+        DFS(ret, Root);
 
         return ret;
+    }
+
+    /**
+     * Возвращает количество потомков
+     */
+    private int DFS(LinkedList<SimpleTreeNode<T>> aRet, SimpleTreeNode<T> aVert) {
+        int allChildSum = 0;
+
+        if (aVert == null) {
+            return 0;
+        } else if (aVert.Children != null) {
+            return 1;
+        }
+
+        SimpleTreeNode<T> curNode = null;
+        for (int i = 0; i < aVert.Children.size(); i++) {
+            curNode      = aVert.Children.get(i);
+            int childSum = DFS(aRet, curNode);
+
+            if (childSum % 2 == 0) {
+                aRet.addLast(aVert);
+                aRet.addLast(curNode);
+                curNode.Parent = null;
+                aVert.Children.remove(curNode);
+            } else {
+                allChildSum += childSum;
+            }
+        }
+
+        // вычисляем количество потомков у левого потомка
+        // Запускаем DFS от левого потомка
+
+        // если кол-во потомков четное, то разрываем связь родитель-потомок
+        // записываем текущую вершину и вершину левого потомка в список ret
+        // вычисляем количество потомков у правого потомка
+        // Запускаем DFS от правого потомка
+        // если кол-во потомков четное, то разрываем связь родитель-потомок
+        // записываем текущую вершину и вершину правого потомка в список ret
+
+        // возвращаем количество детей текущей вершины
+        return allChildSum + 1;
     }
 }
