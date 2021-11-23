@@ -212,7 +212,8 @@ class SimpleTree<T> {
      * @param OriginalNode
      * @param NewParent
      */
-    public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent) {
+    public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent)
+    {
         // Пустое звено не добавляется к дереву
         if (OriginalNode == null) {
             return;
@@ -234,7 +235,8 @@ class SimpleTree<T> {
      * На основе текущего готового дерева формирует максимально возможный результирующий список пар вершин,
      * для которых надо разорвать связь
      */
-    public ArrayList<T> EvenTrees() {
+    public ArrayList<T> EvenTrees()
+    {
         LinkedList<SimpleTreeNode<T>> ret = new LinkedList<SimpleTreeNode<T>>();
         ArrayList<T> queue = new ArrayList<T>();
 
@@ -246,41 +248,44 @@ class SimpleTree<T> {
     /**
      * Возвращает количество потомков
      */
-    private int DFS(LinkedList<SimpleTreeNode<T>> aRet, SimpleTreeNode<T> aVert) {
-        int allChildSum = 0;
+    private int DFS(LinkedList<SimpleTreeNode<T>> aRet, SimpleTreeNode<T> aVert)
+    {
 
-        if (aVert == null) {
+        if (aVert == null)
+        {
             return 0;
-        } else if (aVert.Children != null) {
+        }
+
+        if (aVert.Children != null)
+        {
             return 1;
         }
 
+        int allChildSum = 0;
+        // Запускаем DFS от каждого потомка потомка
         SimpleTreeNode<T> curNode = null;
-        for (int i = 0; i < aVert.Children.size(); i++) {
+        for (int i = 0; i < aVert.Children.size(); i++)
+        {
             curNode      = aVert.Children.get(i);
             int childSum = DFS(aRet, curNode);
-
-            if (childSum % 2 == 0) {
+            // если кол-во потомков четное
+            if (childSum % 2 == 0)
+            {
+                // записываем текущую вершину и вершину левого потомка в список ret
                 aRet.addLast(aVert);
                 aRet.addLast(curNode);
+                // разрываем связь родитель-потомок
                 curNode.Parent = null;
                 aVert.Children.remove(curNode);
-            } else {
+            } else
+            {
+                // увеличиваем число потомков узла aVert
                 allChildSum += childSum;
             }
         }
 
-        // вычисляем количество потомков у левого потомка
-        // Запускаем DFS от левого потомка
 
-        // если кол-во потомков четное, то разрываем связь родитель-потомок
-        // записываем текущую вершину и вершину левого потомка в список ret
-        // вычисляем количество потомков у правого потомка
-        // Запускаем DFS от правого потомка
-        // если кол-во потомков четное, то разрываем связь родитель-потомок
-        // записываем текущую вершину и вершину правого потомка в список ret
-
-        // возвращаем количество детей текущей вершины
+        // возвращаем количество вершин с учетом текущей вершины aVert и всех её потомков
         return allChildSum + 1;
     }
 }
