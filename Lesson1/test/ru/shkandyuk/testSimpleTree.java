@@ -124,4 +124,49 @@ public class testSimpleTree {
             System.out.println(x.NodeValue);
         }
     }
+
+    @Test
+    public void evenTrees() {
+        SimpleTreeNode<Integer> n1 = new SimpleTreeNode<Integer>(1, null);
+        SimpleTreeNode<Integer> n2 = new SimpleTreeNode<Integer>(2, null);
+        SimpleTreeNode<Integer> n3 = new SimpleTreeNode<Integer>(3, null);
+        SimpleTreeNode<Integer> n4 = new SimpleTreeNode<Integer>(4, null);
+        SimpleTreeNode<Integer> n5 = new SimpleTreeNode<Integer>(5, null);
+        SimpleTreeNode<Integer> n6 = new SimpleTreeNode<Integer>(6, null);
+        SimpleTreeNode<Integer> n7 = new SimpleTreeNode<Integer>(7, null);
+        SimpleTreeNode<Integer> n8 = new SimpleTreeNode<Integer>(8, null);
+        SimpleTreeNode<Integer> n9 = new SimpleTreeNode<Integer>(9, null);
+        SimpleTreeNode<Integer> n10 = new SimpleTreeNode<Integer>(10, null);
+        SimpleTreeNode<Integer> n11 = new SimpleTreeNode<Integer>(11, null);
+        SimpleTreeNode<Integer> n12 = new SimpleTreeNode<Integer>(12, null);
+
+        SimpleTree<Integer> myTree = new SimpleTree<Integer>(n1);
+        System.out.println("Tree count: " + myTree.Count());
+
+        myTree.AddChild(n1, n2);
+        myTree.AddChild(n1, n3);
+        myTree.AddChild(n1, n6);
+
+        myTree.AddChild(n2, n5);
+        myTree.AddChild(n2, n7);
+
+        myTree.AddChild(n3, n4);
+        myTree.AddChild(n6, n8);
+
+        myTree.AddChild(n8, n9);
+        myTree.AddChild(n8, n10);
+
+        myTree.AddChild(n4, n11);
+        myTree.AddChild(n4, n13);
+
+        myTree.AddChild(n10, n12);
+
+
+        ArrayList<Integer> ret = myTree.EvenTrees();
+        for (Integer x: ret) {
+            System.out.print(x + ", ");
+        }
+    }
+
+
 }

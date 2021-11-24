@@ -1,4 +1,4 @@
-package ru.shkandyuk;
+//package ru.shkandyuk;
 
 import java.util.*;
 
@@ -237,8 +237,7 @@ class SimpleTree<T> {
      */
     public ArrayList<T> EvenTrees()
     {
-        LinkedList<SimpleTreeNode<T>> ret = new LinkedList<SimpleTreeNode<T>>();
-        ArrayList<T> queue = new ArrayList<T>();
+        ArrayList<T> ret = new ArrayList<>();
 
         DFS(ret, Root);
 
@@ -248,7 +247,7 @@ class SimpleTree<T> {
     /**
      * Возвращает количество потомков
      */
-    private int DFS(LinkedList<SimpleTreeNode<T>> aRet, SimpleTreeNode<T> aVert)
+    private int DFS(ArrayList<T> aRet, SimpleTreeNode<T> aVert)
     {
 
         if (aVert == null)
@@ -256,15 +255,14 @@ class SimpleTree<T> {
             return 0;
         }
 
-        if (aVert.Children != null)
+        if (aVert.Children == null)
         {
             return 1;
         }
-
         int allChildSum = 0;
         // Запускаем DFS от каждого потомка потомка
-        SimpleTreeNode<T> curNode = null;
-        for (int i = 0; i < aVert.Children.size(); i++)
+        SimpleTreeNode<T> curNode;
+        for ( int i = 0; i < aVert.Children.size(); i++  )
         {
             curNode      = aVert.Children.get(i);
             int childSum = DFS(aRet, curNode);
@@ -272,18 +270,14 @@ class SimpleTree<T> {
             if (childSum % 2 == 0)
             {
                 // записываем текущую вершину и вершину левого потомка в список ret
-                aRet.addLast(aVert);
-                aRet.addLast(curNode);
-                // разрываем связь родитель-потомок
-                curNode.Parent = null;
-                aVert.Children.remove(curNode);
+                aRet.add(aVert.NodeValue);
+                aRet.add(curNode.NodeValue);
             } else
             {
                 // увеличиваем число потомков узла aVert
                 allChildSum += childSum;
             }
         }
-
 
         // возвращаем количество вершин с учетом текущей вершины aVert и всех её потомков
         return allChildSum + 1;
