@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleGraphTest {
@@ -135,5 +137,29 @@ class SimpleGraphTest {
             }
             System.out.println("]");
         }
+    }
+
+    @Test
+    void depthFirstSearch() {
+        System.out.println("Vertex size: " + g1.vertexSize());
+        g1.AddEdge(2, 4);
+        g1.AddEdge(4, 3);
+        g1.AddEdge(4, 1);
+//        g1.AddEdge(3, 5);
+//        g1.AddEdge(1, 5);
+        g1.AddEdge(5, 7);
+        g1.AddEdge(5, 6);
+        g1.AddEdge(6, 8);
+        g1.AddEdge(6, 9);
+        g1.AddEdge(9, 0);
+        g1.AddEdge(7, 0);
+
+        ArrayList<Vertex> res = g1.DepthFirstSearch(2, 0);
+
+        for (Vertex x: res) {
+            System.out.print( x.Value + " -> ");
+        }
+//        printGraph();
+
     }
 }

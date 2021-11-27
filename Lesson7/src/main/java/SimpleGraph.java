@@ -3,6 +3,7 @@ import java.util.*;
 class Vertex
 {
     public int Value;
+    public boolean Hit;
     public Vertex(int val)
     {
         Value = val;
@@ -46,7 +47,7 @@ class SimpleGraph
 
     }
 
-    // здесь и далее, параметры v -- индекс вершины
+    // Здесь и далее, параметры v -- индекс вершины
     // в списке  vertex
     public void RemoveVertex(int v)
     {
@@ -96,6 +97,58 @@ class SimpleGraph
             m_adjacency[v2][v1] = 0;
         }
 
+    }
+
+    // Возвращается список узлов -- путь из VFrom в VTo.
+    public ArrayList<Vertex> DepthFirstSearch( int VFrom, int VTo )
+    {
+        ArrayList<Vertex> ret = new ArrayList<Vertex>();
+
+        if ( VFrom < 0 || VFrom >= vertex.length || VTo < 0 || VTo >= vertex.length ) {
+            return ret;
+        }
+
+        // Устанавливаю для нвоого поиска все вершины как непосещенные
+        for ( int i = 0;i < vertex.length && vertex[i] != null; i++ ) {
+            vertex[i].Hit = false;
+        }
+
+        Stack<Integer> queue = new Stack<>();
+        queue.push( VFrom );                    
+
+        while ( !queue.isEmpty() ) {
+            int curVert = queue.peek();
+            vertex[curVert].Hit = true;         // Фиксируем текущую вершину как посещенную
+
+            // Искомая вершина является смежной к текущей
+            if ( m_adjacency[curVert][VTo] == 1) {
+                queue.push(VTo);
+                break;
+            }
+
+            for ( int i = 0; i < m_adjacency.length; i++ ) {
+                // Перебираем список смежных вершин если находим непосещенную, то пушим ее в стек
+                if ( m_adjacency[curVert][i] == 1 && vertex[i].Hit == false ){
+                    queue.push(i);
+                    break;
+                }
+                if ( i == m_adjacency.length - 1 ){
+                    queue.pop();
+                }
+            }
+
+        }
+
+        if ( !queue.isEmpty() ) {
+            int size = queue.size();
+            Integer[] arr= new Integer[size];
+            queue.copyInto(arr);
+            for ( int i = 0; i < arr.length; i++  ) {
+                ret.add(i, vertex[arr[i]]);
+            }
+        }
+
+        return ret;
     }
 
     public int vertexSize()
