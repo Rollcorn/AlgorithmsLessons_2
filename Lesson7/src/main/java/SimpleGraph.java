@@ -221,6 +221,51 @@ class SimpleGraph
         return ret;
     }
 
+    public ArrayList<Vertex> WeakVertices()
+    {
+        ArrayList<Vertex> ret = new ArrayList<>();
+
+        for ( int i = 0; i < vertex.length && vertex[i] != null; i++ )
+        {
+            vertex[i].Hit = false;
+        }
+
+        for (int i = 0; i < vertex.length; i++)
+        {
+            if ( vertex[i] == null || vertex[i].Hit )
+            {
+                continue;
+            }
+
+            for (int j = 0; j < vertex.length; j++ )
+            {
+                if ( vertex[j] == null || m_adjacency[i][j] != 1 )
+                {
+                    continue;
+                }
+
+                for ( int k = j + 1; k < vertex.length; k++ )
+                {
+                    if ( m_adjacency[i][k] == 1 && m_adjacency[j][k] == 1 )
+                    {
+                        vertex[i].Hit = true;
+                        vertex[j].Hit = true;
+                        vertex[k].Hit = true;
+                    }
+                }
+            }
+        }
+
+        for ( Vertex x : vertex )
+        {
+            if ( !x.Hit )
+            {
+                ret.add(x);
+            }
+        }
+        return ret;
+    }
+
     public int vertexSize()
     {
         int size = 0;

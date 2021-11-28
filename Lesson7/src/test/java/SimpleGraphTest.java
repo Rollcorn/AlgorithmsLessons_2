@@ -196,4 +196,30 @@ class SimpleGraphTest {
             System.out.print( x.Value + " -> ");
         }
     }
+
+    @Test
+    void weakVertices() {
+        System.out.println("Vertex size: " + g1.vertexSize());
+        g1.AddEdge(2, 4);
+        g1.AddEdge(2, 0);
+        g1.AddEdge(4, 3);
+        g1.AddEdge(4, 1);
+        g1.AddEdge(3, 1);
+        g1.AddEdge(3, 6);
+        g1.AddEdge(1, 6);
+        g1.AddEdge(0, 7);
+        g1.AddEdge(7, 5);
+        g1.AddEdge(7, 8);
+        g1.AddEdge(8, 5);
+        g1.AddEdge(9, 5);
+        g1.AddEdge(9, 1);
+        g1.AddEdge(6, 10);
+        g1.AddEdge(10, 11);
+
+        ArrayList<Vertex> res = g1.WeakVertices();
+        for (Vertex x: res) {
+            System.out.print( x.Value + ", ");
+        }
+
+    }
 }
