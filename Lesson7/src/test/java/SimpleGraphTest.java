@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleGraphTest {
-    SimpleGraph g1 = new SimpleGraph(10);
+    SimpleGraph g1 = new SimpleGraph(12);
 
     @BeforeEach
     void setUp() {
@@ -20,6 +20,9 @@ class SimpleGraphTest {
         g1.AddVertex(8);
         g1.AddVertex(9);
         g1.AddVertex(10);
+        g1.AddVertex(11);
+        g1.AddVertex(12);
+
     }
 
     @Test
@@ -143,23 +146,54 @@ class SimpleGraphTest {
     void depthFirstSearch() {
         System.out.println("Vertex size: " + g1.vertexSize());
         g1.AddEdge(2, 4);
+        g1.AddEdge(2, 0);
         g1.AddEdge(4, 3);
         g1.AddEdge(4, 1);
-//        g1.AddEdge(3, 5);
-//        g1.AddEdge(1, 5);
-        g1.AddEdge(5, 7);
-        g1.AddEdge(5, 6);
-        g1.AddEdge(6, 8);
-        g1.AddEdge(6, 9);
-        g1.AddEdge(9, 0);
-        g1.AddEdge(7, 0);
+        g1.AddEdge(3, 6);
+        g1.AddEdge(1, 6);
+        g1.AddEdge(0, 7);
+        g1.AddEdge(7, 5);
+        g1.AddEdge(7, 8);
+        g1.AddEdge(8, 5);
+//        g1.AddEdge(8, 11);
+        g1.AddEdge(9, 5);
+        g1.AddEdge(9, 1);
+        g1.AddEdge(6, 10);
+        g1.AddEdge(10, 11);
 
-        ArrayList<Vertex> res = g1.DepthFirstSearch(2, 0);
+        ArrayList<Vertex> res = g1.DepthFirstSearch(2, 11);
 
         for (Vertex x: res) {
             System.out.print( x.Value + " -> ");
         }
 //        printGraph();
 
+    }
+
+    @Test
+    void breadthFirstSearch() {
+        System.out.println("Vertex size: " + g1.vertexSize());
+        g1.AddEdge(2, 4);
+        g1.AddEdge(2, 0);
+        g1.AddEdge(4, 3);
+        g1.AddEdge(4, 1);
+        g1.AddEdge(3, 6);
+        g1.AddEdge(1, 6);
+        g1.AddEdge(0, 7);
+        g1.AddEdge(7, 5);
+        g1.AddEdge(7, 8);
+        g1.AddEdge(8, 5);
+        g1.AddEdge(9, 5);
+        g1.AddEdge(9, 1);
+        g1.AddEdge(6, 10);
+        g1.AddEdge(10, 11);
+//        g1.AddEdge(8, 10);
+
+        printGraph();
+
+        ArrayList<Vertex> res = g1.BreadthFirstSearch(2, 11);
+        for (Vertex x: res) {
+            System.out.print( x.Value + " -> ");
+        }
     }
 }

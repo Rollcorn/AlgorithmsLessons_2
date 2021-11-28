@@ -4,6 +4,8 @@ class Vertex
 {
     public int Value;
     public boolean Hit;
+    public int deep;
+
     public Vertex(int val)
     {
         Value = val;
@@ -144,6 +146,77 @@ class SimpleGraph
                 ret.add(i, vertex[arr[i]]);
             }
         }
+
+        return ret;
+    }
+
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo)
+    {
+        ArrayList<Vertex> ret = new ArrayList<>();
+
+        if ( VFrom < 0 || VFrom >= vertex.length || VTo < 0 || VTo >= vertex.length )
+        {
+            return ret;
+        }
+
+        for ( int i = 0; i < vertex.length && vertex[i] != null; i++ )
+        {
+            vertex[i].Hit = false;
+            vertex[i].deep = vertex.length * vertex.length;
+        }
+
+        Deque<Integer> queue = new LinkedList<>();
+        queue.push( VFrom );
+        vertex[VFrom].deep = 0;
+        vertex[VFrom].Hit = true;
+
+        while ( !queue.isEmpty() )
+        {
+            int curVert = queue.pollFirst();
+
+            if (m_adjacency[curVert][VTo] == 1)
+            {
+                break;
+            }
+
+            for ( int i = 0; i < m_adjacency.length; i++ )
+            {
+
+                if ( m_adjacency[curVert][i] == 1 && !vertex[i].Hit )
+                {
+                    vertex[i].Hit = true;
+                    vertex[i].deep = vertex[curVert].deep + 1;
+                    queue.addLast(i);
+                }
+            }
+
+            if ( queue.isEmpty() )
+            {
+                return ret;
+            }
+        }
+
+        Deque<Vertex> res = new ArrayDeque<>();
+        int curVert = VTo;
+        res.addFirst(vertex[VTo]);
+        while ( curVert != VFrom)
+        {
+            if ( m_adjacency[curVert][VFrom] == 1 ) {
+                res.addFirst(vertex[VFrom]);
+                break;
+            }
+            int curMinInd = curVert;
+            for ( int i = 0; i < m_adjacency.length; i++ )
+            {
+                if ( m_adjacency[curVert][i] == 1 && vertex[curMinInd].deep > vertex[i].deep )
+                {
+                    curMinInd = i;
+                }
+            }
+            curVert = curMinInd;
+            res.addFirst(vertex[curVert]);
+        }
+        ret.addAll(res);
 
         return ret;
     }
